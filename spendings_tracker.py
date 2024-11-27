@@ -46,13 +46,6 @@ class Week:
                 id INTEGER PRIMARY KEY, priority_type TEXT, category TEXT, name TEXT, cost FLOAT
                 )'''
         self.cursor.execute(cq) # creates table
-        
-        # percentage version
-        self.weekly_tuition_perc = (self.tuition / self.weekly_salary) * 100
-        self.weekly_rent_perc = (self.rent / self.weekly_salary) * 100
-        self.weekly_utilities_perc = (self.utilities / self.weekly_salary) * 100
-        
-        self.starting_amount = self.weekly_salary - (self.tuition + self.rent + self.utilities)
             
             
     def insert_data(self, file_path):
@@ -96,6 +89,11 @@ class Week:
         
         """
         
+        # percentage version
+        self.weekly_tuition_perc = (weekly_info["Tuition"] / weekly_info["Salary"]) * 100
+        self.weekly_rent_perc = (weekly_info["Rent"] / weekly_info["Salary"]) * 100
+        self.weekly_utilities_perc = (weekly_info["Utilities"] / weekly_info["Salary"]) * 100
+                
         # the amount of money that is left after considering the unavoidable financial payments
         starting_amount = weekly_info["Salary"] - (weekly_info["Tuition"] + weekly_info["Rent"] + weekly_info["Utilities"])
         
@@ -251,8 +249,7 @@ def main():
     
     print("Hello!")
     print("This is the Weekly Spendings Tracker.")
-    print("In order to provide a significant analysis, please provide your")
-    print("yearly salary, tuition, rent, and utilities.")
+    print("In order to provide a significant analysis, please provide your yearly salary, tuition, rent, and utilities.")
     info = general_info() # a tuple
     print("Your information was successfully saved.")
     
