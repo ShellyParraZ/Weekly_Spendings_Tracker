@@ -95,7 +95,7 @@ class Week:
         self.weekly_utilities_perc = (weekly_info["Utilities"] / weekly_info["Salary"]) * 100
                 
         # the amount of money that is left after considering the unavoidable financial payments
-        starting_amount = weekly_info["Salary"] - (weekly_info["Tuition"] + weekly_info["Rent"] + weekly_info["Utilities"])
+        self.starting_amount = weekly_info["Salary"] - (weekly_info["Tuition"] + weekly_info["Rent"] + weekly_info["Utilities"])
         
         # locate the "Windfall" in priority type column, then add the costs in those rows
         sq1 = '''SELECT SUM(cost) FROM week WHERE priority_type = "Windfall"'''
@@ -124,7 +124,7 @@ class Week:
         self.need_spendings_perc = (self.spending_needs / self.total_spendings) * 100
         
         # get the overdraft and remaining balance
-        overdraft_balance = (starting_amount + self.windfall) - self.total_spendings
+        overdraft_balance = (self.starting_amount + self.windfall) - self.total_spendings
         if overdraft_balance < 0.0:
             self.overdraft = overdraft_balance * -1.0
             self.remaining_balance = 0.0
