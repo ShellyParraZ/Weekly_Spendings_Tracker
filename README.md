@@ -1,2 +1,2 @@
 # Weekly_Spendings_Tracker
-This program will track the spendings of the user and provide a detailed report based on categories.
+This program will provide prompts and generate calculations based on the users weekly spendings. Ultimately an analysis of the users weekly spendings will be provided.
