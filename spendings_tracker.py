@@ -287,6 +287,7 @@ def main():
     # After collecting and printing all the information, close the database connection
     conn.close()
 
-
+# create a repository in github!!
+# clone it, it should say github
 if __name__ == "__main__":
     main()
