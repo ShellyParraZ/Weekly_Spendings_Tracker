@@ -141,6 +141,11 @@ class Week:
         
         """
         
+        sq = f'''SELECT SUM(cost) FROM week WHERE category = {category}'''
+        self.cursor.execute(sq)
+        percent = self.cursor.fetchall()
+        print(f"\t{category}: {percent}%")
+        
         
     def __repr__(self):
         """ Prints out all the information gathered regarding the week.
@@ -279,6 +284,12 @@ def main():
     week.__repr__()
         
     # thorough category analysis
+    print("Thorough Category Analysis")
+    categories = ["Dining Out Food", "Groceries", "Personal Care", "Gardening Supplies", "Clothing", 
+                  "Household Items", "Technology", "Entertainment", "Health & Fitness", "Gifts", 
+                  "School Resources", "Work Resources", "Pet Care", "Other"]
+    for category in categories:
+        week.category_analysis(category)
     
         
     # thorough name analysis
