@@ -13,6 +13,7 @@ Challenges Encountered: Understanding databases.
 import csv
 import sqlite3
 import os
+import pandas as pd
 
 
 class Week:
@@ -43,7 +44,7 @@ class Week:
         
         # create table query
         cq = f'''CREATE TABLE week (
-                id INTEGER PRIMARY KEY, priority_type TEXT, category TEXT, name TEXT, cost FLOAT
+                priority_type TEXT, category TEXT, name TEXT, cost FLOAT
                 )'''
         self.cursor.execute(cq) # creates table
             
@@ -100,17 +101,20 @@ class Week:
         # locate the "Windfall" in priority type column, then add the costs in those rows
         sq1 = '''SELECT SUM(cost) FROM week WHERE priority_type = "Windfall"'''
         self.cursor.execute(sq1)
-        self.windfall = self.cursor.fetchall() # the sum of the windfall
+        self.windfall = self.cursor.fetchone() # the sum of the windfall
         
         # calculate the total spendings by finding the sums of all the rows, except windfall
         sq2 = '''SELECT SUM(cost) FROM week WHERE priority_type != "Windfall"'''
         self.cursor.execute(sq2)
-        self.total_spendings = self.cursor.fetchall()
+        self.total_spendings = self.cursor.fetchone()
         
         # locate the "Want" in priority type column, then add the costs in those rows
         sq3 = f'''SELECT SUM(cost) FROM week WHERE priority_type = "Want"'''
         self.cursor.execute(sq3)
-        self.spending_wants = self.cursor.fetchall()
+        self.spending_wants = self.cursor.fetchone() #CHANGE!
+        print("HEREEEEEE")
+        print(self.spending_wants)
+        print(self.total_spendings)
         
         # get the want percentage
         self.want_spendings_perc = (self.spending_wants / self.total_spendings) * 100
@@ -118,7 +122,7 @@ class Week:
         # locate the "Need" in priority type column, then add the costs in those rows
         sq4 = f'''SELECT SUM(cost) FROM week WHERE priority_type = "Need"'''
         self.cursor.execute(sq4)
-        self.spending_needs = self.cursor.fetchall()
+        self.spending_needs = self.cursor.fetchone()
         
         # get the need percentage
         self.need_spendings_perc = (self.spending_needs / self.total_spendings) * 100
@@ -272,11 +276,13 @@ def main():
     
     for root, dirs, files in os.walk(folder_path):
         for file in files:
-            # check if the file is empty
-            file_size = os.stat(file).st_size
             
-            if file_size > 0:
-                week.insert_data(file)
+            # use pandas
+            # check if the file is empty
+            file_size = pd.read_csv(f"{folder_path}\{file}")
+            
+            if not file_size.empty:
+                week.insert_data(f"{folder_path}\{file}")
                 
     week.retrieve_analysis(weekly_info)
     
