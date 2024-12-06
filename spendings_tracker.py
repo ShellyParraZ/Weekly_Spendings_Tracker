@@ -279,10 +279,11 @@ def main():
             
             # use pandas
             # check if the file is empty
-            file_size = pd.read_csv(f"{folder_path}\{file}")
-            
-            if not file_size.empty:
-                week.insert_data(f"{folder_path}\{file}")
+            try:
+                pd.read_csv(f"{folder_path}\\{file}")
+                week.insert_data(f"{folder_path}\\{file}")
+            except pd.errors.EmptyDataError:
+                print("Empty")
                 
     week.retrieve_analysis(weekly_info)
     
