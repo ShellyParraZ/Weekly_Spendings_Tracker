@@ -101,20 +101,20 @@ class Week:
         # locate the "Windfall" in priority type column, then add the costs in those rows
         sq1 = '''SELECT SUM(cost) FROM week WHERE priority_type = "Windfall"'''
         self.cursor.execute(sq1)
-        self.windfall = self.cursor.fetchone() # the sum of the windfall
+        t = self.cursor.fetchone() # the sum of the windfall
+        self.windfall = t[0] # get the int from the tuple
         
         # calculate the total spendings by finding the sums of all the rows, except windfall
         sq2 = '''SELECT SUM(cost) FROM week WHERE priority_type != "Windfall"'''
         self.cursor.execute(sq2)
-        self.total_spendings = self.cursor.fetchone()
+        t = self.cursor.fetchone()
+        self.total_spendings = t[0] # get the int from the tuple
         
         # locate the "Want" in priority type column, then add the costs in those rows
         sq3 = f'''SELECT SUM(cost) FROM week WHERE priority_type = "Want"'''
         self.cursor.execute(sq3)
-        self.spending_wants = self.cursor.fetchone() #CHANGE!
-        print("HEREEEEEE")
-        print(self.spending_wants)
-        print(self.total_spendings)
+        t = self.cursor.fetchone() #CHANGE!
+        self.spending_wants = t[0] # get the int from the tuple
         
         # get the want percentage
         self.want_spendings_perc = (self.spending_wants / self.total_spendings) * 100
@@ -122,7 +122,8 @@ class Week:
         # locate the "Need" in priority type column, then add the costs in those rows
         sq4 = f'''SELECT SUM(cost) FROM week WHERE priority_type = "Need"'''
         self.cursor.execute(sq4)
-        self.spending_needs = self.cursor.fetchone()
+        t = self.cursor.fetchone()
+        self.spending_needs = t[0] # get the int from the tuple
         
         # get the need percentage
         self.need_spendings_perc = (self.spending_needs / self.total_spendings) * 100
