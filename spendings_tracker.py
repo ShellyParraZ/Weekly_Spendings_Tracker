@@ -60,8 +60,6 @@ class Week:
         
         """
         
-        # should I consider rows that have missing columns!!!!!!
-        
         with open(file_path, 'r', encoding = 'utf-8') as csv_file: # to read the file
             csv_reader = csv.reader(csv_file, delimiter = ',') # object, the comma is default
             
@@ -163,29 +161,29 @@ class Week:
         print(f"\t{category}: {percent}%")
         
         
-    def name_analysis(self, name):
-        """ Calculates the percentage of each name.
+    def name_analysis(self, names_cost):
+        """ Calculates the percentage of each name in the dictionary.
         
         Attributes:
-            name (str): A name from the Week database.
-        
+            names_cost (dict): The names with their cost. The name is the key and the cost is the value.
+            
         Special Effects:
             Prints the names with their percentages.
         
         """
         
-        sq = f'''SELECT SUM(cost) FROM week WHERE name = ?'''
-        self.cursor.execute(sq, (name,))
-        t = self.cursor.fetchone() # get the float from the tuple
-        name_cost = t[0] if t[0] is not None else 0.0
+        print()
+        print("Thorough Name Analysis")
         
-        # check if total_spendings is 0.0 to avoid an error
-        if self.total_spendings == 0.0:
-            percent = 0.0
-        else:
-            percent = (name_cost / self.total_spendings) * 100.0
+        for key in names_cost:  
+            # check if total_spendings is 0.0 to avoid an error
+            if self.total_spendings == 0.0:
+                percent = 0.0
+            else:
+                percent = (names_cost[key] / self.total_spendings) * 100.0
+                print(f"\t{key}: {percent}%")
         
-        print(f"\t{name}: {percent}%")
+        print()
         
         
     def __repr__(self):
@@ -337,14 +335,24 @@ def main():
         week.category_analysis(category)
     
     # thorough name analysis
-    sq = """SELECT name FROM week""" # will this grab all the names?
+    sq = """SELECT name FROM week WHERE priority_type != "Windfall" """ # grabs all the names
     week.cursor.execute(sq)
     name_list = week.cursor.fetchall() # a list of tuples that contain one element
     
-    print()
-    print("Thorough Name Analysis")
+    name_with_cost = {}
     for name in name_list:
-        week.name_analysis(name[0])
+        sq = f'''SELECT SUM(cost) FROM week WHERE name = ?'''
+        week.cursor.execute(sq, (name[0],))
+        t = week.cursor.fetchone() # get the float from the tuple
+        cost = t[0] if t[0] is not None else 0.0 # provides the cost of the name
+        name_l = name[0].title() # change to title to elimiate duplicates that are different letter cases
+        if name_l in name_with_cost: # the name exists in the dictionary
+            name_with_cost[name_l] = name_with_cost[name_l] + cost
+        else:
+            name_with_cost[name_l] = cost
+    
+    # call a method that will determine the percentages
+    week.name_analysis(name_with_cost)
     
     # After collecting and printing all the information, close the database connection
     conn.close()
