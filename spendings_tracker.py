@@ -141,8 +141,11 @@ class Week:
     def category_analysis(self, category):
         """ Calculates the percentage of each category.
         
+        Attributes:
+            category (str): A category from the Week database.
+        
         Special Effects:
-            Prints the categories and their percentages.
+            Prints the categories with their percentages.
         
         """
         
@@ -158,6 +161,31 @@ class Week:
             percent = (category_cost / self.total_spendings) * 100.0
         
         print(f"\t{category}: {percent}%")
+        
+        
+    def name_analysis(self, name):
+        """ Calculates the percentage of each name.
+        
+        Attributes:
+            name (str): A name from the Week database.
+        
+        Special Effects:
+            Prints the names with their percentages.
+        
+        """
+        
+        sq = f'''SELECT SUM(cost) FROM week WHERE name = ?'''
+        self.cursor.execute(sq, (name,))
+        t = self.cursor.fetchone() # get the float from the tuple
+        name_cost = t[0] if t[0] is not None else 0.0
+        
+        # check if total_spendings is 0.0 to avoid an error
+        if self.total_spendings == 0.0:
+            percent = 0.0
+        else:
+            percent = (name_cost / self.total_spendings) * 100.0
+        
+        print(f"\t{name}: {percent}%")
         
         
     def __repr__(self):
@@ -308,21 +336,19 @@ def main():
     for category in categories:
         week.category_analysis(category)
     
-    
     # thorough name analysis
-    names = []
     sq = """SELECT name FROM week""" # will this grab all the names?
     week.cursor.execute(sq)
-    t = week.cursor.fetchall()
-    print(t)
+    name_list = week.cursor.fetchall() # a list of tuples that contain one element
     
-    # Concluding sentence
-    print("Finished!")
+    print()
+    print("Thorough Name Analysis")
+    for name in name_list:
+        week.name_analysis(name[0])
     
     # After collecting and printing all the information, close the database connection
     conn.close()
 
-# create a repository in github!!
-# clone it, it should say github
+
 if __name__ == "__main__":
     main()
