@@ -89,11 +89,11 @@ class Week:
             Using the week table, different variations of information is collected an assigned a variable.
         
         """
-        
+        # IF IT IS ZERO I SHOULD CREATE AN EXCEPTION!!!!!!!!!! ZeroExceptionError
         # percentage version
-        self.weekly_tuition_perc = (weekly_info["Tuition"] / weekly_info["Salary"]) * 100
-        self.weekly_rent_perc = (weekly_info["Rent"] / weekly_info["Salary"]) * 100
-        self.weekly_utilities_perc = (weekly_info["Utilities"] / weekly_info["Salary"]) * 100
+        self.weekly_tuition_perc = (weekly_info["Tuition"] / weekly_info["Salary"]) * 100.0
+        self.weekly_rent_perc = (weekly_info["Rent"] / weekly_info["Salary"]) * 100.0
+        self.weekly_utilities_perc = (weekly_info["Utilities"] / weekly_info["Salary"]) * 100.0
                 
         # the amount of money that is left after considering the unavoidable financial payments
         self.starting_amount = weekly_info["Salary"] - (weekly_info["Tuition"] + weekly_info["Rent"] + weekly_info["Utilities"])
@@ -102,31 +102,31 @@ class Week:
         sq1 = '''SELECT SUM(cost) FROM week WHERE priority_type = "Windfall"'''
         self.cursor.execute(sq1)
         t = self.cursor.fetchone() # the sum of the windfall
-        self.windfall = t[0] # get the int from the tuple
+        self.windfall = t[0] # get the float from the tuple
         
         # calculate the total spendings by finding the sums of all the rows, except windfall
         sq2 = '''SELECT SUM(cost) FROM week WHERE priority_type != "Windfall"'''
         self.cursor.execute(sq2)
         t = self.cursor.fetchone()
-        self.total_spendings = t[0] # get the int from the tuple
+        self.total_spendings = t[0] # get the float from the tuple
         
         # locate the "Want" in priority type column, then add the costs in those rows
         sq3 = f'''SELECT SUM(cost) FROM week WHERE priority_type = "Want"'''
         self.cursor.execute(sq3)
-        t = self.cursor.fetchone() #CHANGE!
-        self.spending_wants = t[0] # get the int from the tuple
+        t = self.cursor.fetchone()
+        self.spending_wants = t[0] # get the float from the tuple
         
         # get the want percentage
-        self.want_spendings_perc = (self.spending_wants / self.total_spendings) * 100
+        self.want_spendings_perc = (self.spending_wants / self.total_spendings) * 100.0
         
         # locate the "Need" in priority type column, then add the costs in those rows
         sq4 = f'''SELECT SUM(cost) FROM week WHERE priority_type = "Need"'''
         self.cursor.execute(sq4)
         t = self.cursor.fetchone()
-        self.spending_needs = t[0] # get the int from the tuple
+        self.spending_needs = t[0] # get the float from the tuple
         
         # get the need percentage
-        self.need_spendings_perc = (self.spending_needs / self.total_spendings) * 100
+        self.need_spendings_perc = (self.spending_needs / self.total_spendings) * 100.0
         
         # get the overdraft and remaining balance
         overdraft_balance = (self.starting_amount + self.windfall) - self.total_spendings
@@ -146,9 +146,17 @@ class Week:
         
         """
         
-        sq = f'''SELECT SUM(cost) FROM week WHERE category = {category}'''
-        self.cursor.execute(sq)
-        percent = self.cursor.fetchall()
+        sq = f'''SELECT SUM(cost) FROM week WHERE category = ?'''
+        self.cursor.execute(sq, (category,))
+        t = self.cursor.fetchone() # get the float from the tuple
+        category_cost = t[0] if t[0] is not None else 0.0
+        
+        # check if total_spendings is 0.0 to avoid an error
+        if self.total_spendings == 0.0:
+            percent = 0.0
+        else:
+            percent = (category_cost / self.total_spendings) * 100.0
+        
         print(f"\t{category}: {percent}%")
         
         
@@ -160,8 +168,9 @@ class Week:
         
         """
         
-        print("Weekly Summary")
         print()
+        print("Weekly Summary")
+        print("-------------------------------------------------------")
         print(f"Starting Amount: ${self.starting_amount}")
         print(f"Remaining Balance: ${self.remaining_balance}")
         print(f"Overdraft: ${self.overdraft}")
@@ -284,7 +293,7 @@ def main():
                 pd.read_csv(f"{folder_path}\\{file}")
                 week.insert_data(f"{folder_path}\\{file}")
             except pd.errors.EmptyDataError:
-                print("Empty")
+                print("Empty File Located.")
                 
     week.retrieve_analysis(weekly_info)
     
