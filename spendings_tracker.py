@@ -2,10 +2,10 @@
 The apps target audience are college students.
 
 Driver/Navigator: Shelly Parra
-Assignment: Check-in 2
-Date: 10/26/2024
+Assignment: Final Project
+Date: 12/09/2024
 
-Challenges Encountered: Understanding databases.
+Challenges Encountered: Understanding databases and fixing errors.
 
 """
 
@@ -170,11 +170,11 @@ class Week:
         
         print()
         print("Weekly Summary")
-        print("-------------------------------------------------------")
+        print("-----------------------------------------------------------")
         print(f"Starting Amount: ${self.starting_amount}")
         print(f"Remaining Balance: ${self.remaining_balance}")
         print(f"Overdraft: ${self.overdraft}")
-        print(f"Windfall: {self.windfall}")
+        print(f"Windfall: ${self.windfall}")
         print(f"Weekly Tuition Percentage: {self.weekly_tuition_perc}%")
         print(f"Weekly Rent Percentage: {self.weekly_rent_perc}%")
         print(f"Weekly Utilities Percentage: {self.weekly_utilities_perc}%")
@@ -308,9 +308,16 @@ def main():
     for category in categories:
         week.category_analysis(category)
     
-        
-    # thorough name analysis
     
+    # thorough name analysis
+    names = []
+    sq = """SELECT name FROM week""" # will this grab all the names?
+    week.cursor.execute(sq)
+    t = week.cursor.fetchall()
+    print(t)
+    
+    # Concluding sentence
+    print("Finished!")
     
     # After collecting and printing all the information, close the database connection
     conn.close()
