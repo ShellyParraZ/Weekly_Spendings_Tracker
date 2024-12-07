@@ -21,6 +21,7 @@ class Week:
     
     Attributes:
         database_conn (connection): The connection to the database.
+        self.cursor (cursor): To manipulate the database.
         self.weekly_tuition_perc (float): The weekly percentage of money spent on tuition.
         self.weekly_rent_perc (float): The weekly percentage of money spent on rent.
         self.weekly_utilities_perc (float): The weekly percentage of money spent on utilities.
@@ -87,47 +88,53 @@ class Week:
             Using the week table, different variations of information is collected an assigned a variable.
         
         """
-        # IF IT IS ZERO I SHOULD CREATE AN EXCEPTION!!!!!!!!!! ZeroExceptionError
+        
         # percentage version
-        self.weekly_tuition_perc = (weekly_info["Tuition"] / weekly_info["Salary"]) * 100.0
-        self.weekly_rent_perc = (weekly_info["Rent"] / weekly_info["Salary"]) * 100.0
-        self.weekly_utilities_perc = (weekly_info["Utilities"] / weekly_info["Salary"]) * 100.0
+        # a ZeroDivisonError could occur if the income is 0.0
+        if weekly_info["Income"] == 0.0:
+            self.weekly_tuition_perc = 0.0
+            self.weekly_rent_perc = 0.0
+            self.weekly_utilities_perc = 0.0
+        else:
+            self.weekly_tuition_perc = round((weekly_info["Tuition"] / weekly_info["Income"]) * 100.0, 2)
+            self.weekly_rent_perc = round((weekly_info["Rent"] / weekly_info["Income"]) * 100.0, 2)
+            self.weekly_utilities_perc = round((weekly_info["Utilities"] / weekly_info["Income"]) * 100.0, 2)
                 
         # the amount of money that is left after considering the unavoidable financial payments
-        self.starting_amount = weekly_info["Salary"] - (weekly_info["Tuition"] + weekly_info["Rent"] + weekly_info["Utilities"])
-        
+        self.starting_amount = round(weekly_info["Income"] - (weekly_info["Tuition"] + weekly_info["Rent"] + weekly_info["Utilities"]), 2)
+
         # locate the "Windfall" in priority type column, then add the costs in those rows
         sq1 = '''SELECT SUM(cost) FROM week WHERE priority_type = "Windfall"'''
         self.cursor.execute(sq1)
         t = self.cursor.fetchone() # the sum of the windfall
-        self.windfall = t[0] # get the float from the tuple
+        self.windfall = round(t[0], 2) # get the float from the tuple
         
         # calculate the total spendings by finding the sums of all the rows, except windfall
         sq2 = '''SELECT SUM(cost) FROM week WHERE priority_type != "Windfall"'''
         self.cursor.execute(sq2)
         t = self.cursor.fetchone()
-        self.total_spendings = t[0] # get the float from the tuple
+        self.total_spendings = round(t[0], 2) # get the float from the tuple
         
         # locate the "Want" in priority type column, then add the costs in those rows
         sq3 = f'''SELECT SUM(cost) FROM week WHERE priority_type = "Want"'''
         self.cursor.execute(sq3)
         t = self.cursor.fetchone()
-        self.spending_wants = t[0] # get the float from the tuple
+        self.spending_wants = round(t[0], 2) # get the float from the tuple
         
         # get the want percentage
-        self.want_spendings_perc = (self.spending_wants / self.total_spendings) * 100.0
+        self.want_spendings_perc = round((self.spending_wants / self.total_spendings) * 100.0, 2)
         
         # locate the "Need" in priority type column, then add the costs in those rows
         sq4 = f'''SELECT SUM(cost) FROM week WHERE priority_type = "Need"'''
         self.cursor.execute(sq4)
         t = self.cursor.fetchone()
-        self.spending_needs = t[0] # get the float from the tuple
+        self.spending_needs = round(t[0], 2) # get the float from the tuple
         
         # get the need percentage
-        self.need_spendings_perc = (self.spending_needs / self.total_spendings) * 100.0
+        self.need_spendings_perc = round((self.spending_needs / self.total_spendings) * 100.0, 2)
         
         # get the overdraft and remaining balance
-        overdraft_balance = (self.starting_amount + self.windfall) - self.total_spendings
+        overdraft_balance = round((self.starting_amount + self.windfall) - self.total_spendings, 2)
         if overdraft_balance < 0.0:
             self.overdraft = overdraft_balance * -1.0
             self.remaining_balance = 0.0
@@ -156,7 +163,7 @@ class Week:
         if self.total_spendings == 0.0:
             percent = 0.0
         else:
-            percent = (category_cost / self.total_spendings) * 100.0
+            percent = round((category_cost / self.total_spendings) * 100.0, 2)
         
         print(f"\t{category}: {percent}%")
         
@@ -180,7 +187,7 @@ class Week:
             if self.total_spendings == 0.0:
                 percent = 0.0
             else:
-                percent = (names_cost[key] / self.total_spendings) * 100.0
+                percent = round((names_cost[key] / self.total_spendings) * 100.0, 2)
                 print(f"\t{key}: {percent}%")
         
         print()
@@ -217,13 +224,13 @@ class Week:
     
 
 def weekly_calculation(yearly_values):
-    """ Calculate the weekly salary, tuition, rent, and utilities based on the users yearly submission.
+    """ Calculate the weekly income, tuition, rent, and utilities based on the users yearly submission.
     
     Attribute:
-        yearly_values (tuple): the yearly salary, tuition, rent, utilities.
+        yearly_values (tuple): the yearly income, tuition, rent, utilities.
     
     Returns:
-        general_info (dict): A dictionary of the weekly salary, tuition, rent and utilities.
+        general_info (dict): A dictionary of the weekly income, tuition, rent and utilities.
     
     """
     general_info = {}
@@ -233,7 +240,7 @@ def weekly_calculation(yearly_values):
         updated_item = (item / 12) / 4
         
         if index == 0:
-            general_info["Salary"] = updated_item
+            general_info["Income"] = updated_item
         elif index == 1:
             general_info["Tuition"] = updated_item
         elif index == 2:
@@ -253,19 +260,19 @@ def general_info():
     """
     
     while True: 
-        yearly_salary = retrieve_float("Input your yearly salary: ")
+        yearly_income = retrieve_float("Input your yearly income: ")
         yearly_tuition = retrieve_float("Input your yearly tuition: ")
         yearly_rent = retrieve_float("Input your yearly rent: ")
         yearly_utilities = retrieve_float("Input your yearly utilities: ")
         
         print("These are your current responses:")
-        print(f"Yearly Salary: {yearly_salary}")
+        print(f"Yearly Income: {yearly_income}")
         print(f"Tuition: {yearly_tuition}")
         print(f"Rent: {yearly_rent}")
         print(f"Utilities: {yearly_utilities}")
-        restart = input("Would you like to change a response? (\"yes\" or \"no\") ")
+        restart = input("Would you like to change a response? (enter \"no\" to continue) ")
         if restart == "no":
-            return yearly_salary, yearly_tuition, yearly_rent, yearly_utilities
+            return yearly_income, yearly_tuition, yearly_rent, yearly_utilities
 
 
 def retrieve_float(prompt):
@@ -278,8 +285,10 @@ def retrieve_float(prompt):
     
     while True:
         try:
-            response = float(input(prompt + "(otherwise, input 0.0) "))
-            return response
+            response = float(input(prompt))
+            if response >= 0.0:
+                return response
+            print("Negative value. Please enter a positive float.")
         except ValueError: # not a float
             print("Incorrect value. Please enter a float.")
 
@@ -292,9 +301,9 @@ def main():
     
     """
     
-    print("Hello!")
-    print("This is the Weekly Spendings Tracker.")
-    print("In order to provide a significant analysis, please provide your yearly salary, tuition, rent, and utilities.")
+    print("Hello! This is the Weekly Spendings Tracker.")
+    print("In order to provide a significant analysis, please provide your yearly income, tuition, rent, and utilities.")
+    print("These values should be a positive float. Otherwise, input 0.0.")
     info = general_info() # a tuple
     print("Your information was successfully saved.")
     
@@ -308,7 +317,7 @@ def main():
     week = Week(conn)
     
     # go through the files in your folder
-    folder_path = input("Provide the path to your weekly spendings folder: ")
+    folder_path = input("Provide the name of your weekly spendings folder: ")
     
     for root, dirs, files in os.walk(folder_path):
         for file in files:
