@@ -45,7 +45,7 @@ class Week:
         
         # create table query
         cq = f'''CREATE TABLE week (
-                priority_type TEXT, category TEXT, name TEXT, cost FLOAT
+                priority_type TEXT, category TEXT, name TEXT NULL, cost FLOAT NULL
                 )'''
         self.cursor.execute(cq) # creates table
             
@@ -63,6 +63,8 @@ class Week:
         
         with open(file_path, 'r', encoding = 'utf-8') as csv_file: # to read the file
             csv_reader = csv.reader(csv_file, delimiter = ',') # object, the comma is default
+            
+            next(csv_reader, None) # skips the header
             
             # convert to list
             file_list = list(csv_reader)
