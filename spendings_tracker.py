@@ -77,6 +77,10 @@ class Week:
             imq = f'''INSERT INTO week VALUES(?,?,?,?)'''
             self.cursor.executemany(imq, data) # inserts the data      
             
+            # deletes any rows with null values in name or cost
+            dq = """DELETE FROM week WHERE name IS NULL OR name = '' OR cost IS NULL"""
+            self.cursor.execute(dq)
+            
             self.database_conn.commit() # commits changes 
             
     
