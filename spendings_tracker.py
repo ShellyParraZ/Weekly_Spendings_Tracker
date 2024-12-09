@@ -1,5 +1,5 @@
 """ This program will provide an in-depth analysis on your weekly spendings.
-The programs target audience are college students.
+The programs target audience is college students.
 
 Driver/Navigator: Shelly Parra
 Assignment: Final Project
