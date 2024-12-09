@@ -72,7 +72,8 @@ class Week:
             data = [] # empty list that will get populated by the data inside the csv
             
             for row in file_list: # adds all the data to the list
-                data.append(row)
+                if len(row) == 4:
+                    data.append(row)
                 
             imq = f'''INSERT INTO week VALUES(?,?,?,?)'''
             self.cursor.executemany(imq, data) # inserts the data      
