@@ -244,7 +244,7 @@ def weekly_calculation(yearly_values):
     
     for index, item in enumerate(yearly_values):
         
-        updated_item = (item / 12) / 4
+        updated_item = round((item / 12) / 4, 2)
         
         if index == 0:
             general_info["Income"] = updated_item

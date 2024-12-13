@@ -15,6 +15,7 @@ import os
 import pandas as pd
 from spendings_tracker import Week
 import spendings_tracker
+import pytest
 
 
 def test_init():
