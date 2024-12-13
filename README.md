@@ -8,7 +8,7 @@ Weekly Summary
   f“Weekly Summary”
 
 Starting Amount
-  The starting amount is a float. This is the amount of money the user is starting with. This should not change after the weekly tuition, rent, and utilities are considered. 
+  The starting amount is a float. This is the amount of money the user is starting with. This amount can be negative. This should not change after the weekly tuition, rent, and utilities are considered. 
   In order to determine this variable, the yearly tuition, yearly income, yearly rent, and yearly utilities must be converted to weekly variables, by dividing by twelve months, then four weeks.   After those calculations, then the weekly_tuition, weekly_rent, and weekly_utilities should get subtracted from the weekly_income. 
   weekly_tuition = 0.00 / 12 = 0.00 / 4 = 0.00
   weekly_rent = 20400.00 / 12 = 1700 / 4 = 425
