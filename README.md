@@ -8,7 +8,7 @@ Weekly Summary
   f“Weekly Summary”
 
 Starting Amount
-  The starting amount is a float. This is the amount of money the user is starting with. This should not change. 
+  The starting amount is a float. This is the amount of money the user is starting with. This should not change after the weekly tuition, rent, and utilities are considered. 
   In order to determine this variable, the tuition, yearly_salary, rent, and utilities must be converted to weekly variables, by dividing by twelve months, then four weeks.   After those calculations, then the weekly_tuition, weekly_rent, and weekly_utilities should get subtracted from the weekly_salary. 
   weekly_tuition = 0.00 / 12 = 0.00 / 4 = 0.00
   weekly_rent = 20400.00 / 12 = 1700 / 4 = 425
@@ -78,67 +78,18 @@ Spending Needs
   self.spending_needs += each item
   self.spendings_needs_perc = (self.spending_needs / self.total_spendings) * 100
   f”Spending Needs:
-			Total: {self.total_need_spendings}
+			Total: {self.total_need_spendings},
 			Needs Spending Percentage: {self.need_spendings_perc}%”
 
 Thorough Category Analysis
-  The thorough analysis is f-string. This analysis will provide percentages of the categories the user places each name in. 
+  The thorough analysis is f-string. This analysis will provide percentages of the categories the user places each name in. The categories are: Dining Out Food, Groceries, Personal Care, Gardening Supplies, Clothing, Household Items, Technology, Entertainment, Health & Fitness, Gifts, School Resources, Work Resources, Pet Care, Other.
+  f”Thorough Category Analysis
+      Category: %
+      Category: %”
 
 Thorough Name Analysis
-  The thorough name analysis is f-string. The thorough name analysis will provide the percentages of every item in regards to the starting amount.
+  The thorough name analysis is f-string. The thorough name analysis will provide the percentages of every item in regards to the starting amount. The output will depend on the different names at the user provides in the weekly spendings journal. In the program, if there is a name that is recognized multiple times, such as CoFFee and coffee, then these will be considered the same. As a result, Coffee will appear once with the percentage equaling the sum of the two occurrences.
   In order to determine the percentages for each item, every item's total amount will be divided by the starting amount and then multiplied by one-hundred.
   f”Thorough Name Analysis
       Name: %
       Name: %”
-
-
-EXAMPLE OUTPUT
-
-A file containing this information:
-
-Weekly Summary
-
-Starting Amount: $223.65
-Remaining Balance: $0.00
-Overdraft: $41.52
-Windfall: $50.00
-Weekly Tuition Percentage: 0.00%
-Weekly Rent Percentage: 65.38%
-Weekly Utilities Percentage: 0.21%
-Total Spendings: $ 315.17
-
-Spending Wants:
-	Total: $169.57
-	Spending Percentage: 53.80%
-
-Spending Needs:
-	Total: $145.6
-Spending Percentage: 46.2%
-
-Thorough Category Analysis
-	Dining Out Food: %
-	Groceries: %
-	Personal Care: %
-	Gardening Supplies: %
-	Clothing: %
-	Household Items: %
-	Technology: %
-	Entertainment: %
-	Health & Fitness: %
-	Gifts: %
-	School Resources: %
-	Work Resources: %
-	Pet Care: %
-	Other: %
-	Windfall: %
-
-Thorough Name Analysis
-inst327 textbook: 18.28%
-	coffee: 9.49%
-	groceries: 21.58%
-	clothes: 24.16%
-	movie tickets: 5.44%
-	squishmallow: 7.93%
-	dog food: 6.34%
-	lunch: 6.79%
-
