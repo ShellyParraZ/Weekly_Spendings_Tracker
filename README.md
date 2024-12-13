@@ -9,13 +9,13 @@ Weekly Summary
 
 Starting Amount
   The starting amount is a float. This is the amount of money the user is starting with. This should not change after the weekly tuition, rent, and utilities are considered. 
-  In order to determine this variable, the tuition, yearly_salary, rent, and utilities must be converted to weekly variables, by dividing by twelve months, then four weeks.   After those calculations, then the weekly_tuition, weekly_rent, and weekly_utilities should get subtracted from the weekly_salary. 
+  In order to determine this variable, the yearly tuition, yearly income, yearly rent, and yearly utilities must be converted to weekly variables, by dividing by twelve months, then four weeks.   After those calculations, then the weekly_tuition, weekly_rent, and weekly_utilities should get subtracted from the weekly_income. 
   weekly_tuition = 0.00 / 12 = 0.00 / 4 = 0.00
   weekly_rent = 20400.00 / 12 = 1700 / 4 = 425
   weekly_utilities = 64.53 / 12 = 5.38 / 4 = 1.35
-  weekly_salary = 31200.00 / 12 = 2600.00 / 4 = 650.00
+  weekly_income = 31200.00 / 12 = 2600.00 / 4 = 650.00
   self.starting_amount = 650.00 - (0.00 + 425 + 1.35) = 223.65
-  self.starting_amount = weekly_salary - (weekly_tuition + weekly_rent + weekly_utilities)
+  self.starting_amount = weekly_income - (weekly_tuition + weekly_rent + weekly_utilities)
   f”Starting Amount: ${self.starting_amount}”
 
 Remaining Balance
@@ -41,21 +41,21 @@ Windfall
 
 Weekly Tuition Percentage
   The weekly tuition percentage is a float. This is the weekly percentage of money spent on tuition.
-  In order to determine this variable, the weekly_tuition is divided by the weekly_salary, then multiplied by one-hundred to get the percent.
-  self.weekly_tuition_perc = self.weekly_tuition / self.weekly_salary = amount * 100 = amount%
+  In order to determine this variable, the weekly_tuition is divided by the weekly_income, then multiplied by one-hundred to get the percent.
+  self.weekly_tuition_perc = self.weekly_tuition / self.weekly_income = amount * 100 = amount%
   self.weekly_tuition_perc = 0.00 / 650.00 = 0.00 * 100 = 0.00%
   f”Weekly Tuition Percentage: {self.weekly_tuition_perc}”
 
 Weekly Rent Percentage
   The weekly rent percentage is a float. This is the weekly percentage of money spent on rent.
-  In order to determine this variable, the weekly_rent is divided by the weekly_salary, then multiplied by one-hundred to get the percent.
+  In order to determine this variable, the weekly_rent is divided by the weekly_income, then multiplied by one-hundred to get the percent.
   self.weekly_rent_perc = self.weekly_rent / self.weekly_salary = amount * 100 = amount%
   self.weekly_rent_perc = 425 / 650.00 = 0.6538 * 100 = 65.38%
   f”Weekly Rent Percentage: {self.weekly_rent_perc}”
 
 Weekly Utilities Percentage
   The weekly rent percentage is a float. This is the weekly percentage of money spent on rent.
-  In order to determine this variable, the weekly_rent is divided by the weekly_salary, then multiplied by one-hundred to get the percent.
+  In order to determine this variable, the weekly_rent is divided by the weekly_income, then multiplied by one-hundred to get the percent.
   self.weekly_utilities_perc = self.weekly_rent / self.weekly_salary = amount * 100 = amount%
   self.weekly_utilities_perc = 1.35 / 650.00 = 0.0021 * 100 = 0.21%
 
