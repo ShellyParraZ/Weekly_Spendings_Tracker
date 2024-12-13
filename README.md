@@ -8,14 +8,14 @@ Weekly Summary
   f“Weekly Summary”
 
 Starting Amount
-  The starting amount is a float. This is the amount of money the user is starting with. This should not change. 
-  In order to determine this variable, the tuition, yearly_salary, rent, and utilities must be converted to weekly variables, by dividing by twelve months, then four weeks.   After those calculations, then the weekly_tuition, weekly_rent, and weekly_utilities should get subtracted from the weekly_salary. 
+  The starting amount is a float. This is the amount of money the user is starting with. This should not change after the weekly tuition, rent, and utilities are considered. 
+  In order to determine this variable, the yearly tuition, yearly income, yearly rent, and yearly utilities must be converted to weekly variables, by dividing by twelve months, then four weeks.   After those calculations, then the weekly_tuition, weekly_rent, and weekly_utilities should get subtracted from the weekly_income. 
   weekly_tuition = 0.00 / 12 = 0.00 / 4 = 0.00
   weekly_rent = 20400.00 / 12 = 1700 / 4 = 425
   weekly_utilities = 64.53 / 12 = 5.38 / 4 = 1.35
-  weekly_salary = 31200.00 / 12 = 2600.00 / 4 = 650.00
+  weekly_income = 31200.00 / 12 = 2600.00 / 4 = 650.00
   self.starting_amount = 650.00 - (0.00 + 425 + 1.35) = 223.65
-  self.starting_amount = weekly_salary - (weekly_tuition + weekly_rent + weekly_utilities)
+  self.starting_amount = weekly_income - (weekly_tuition + weekly_rent + weekly_utilities)
   f”Starting Amount: ${self.starting_amount}”
 
 Remaining Balance
@@ -41,21 +41,21 @@ Windfall
 
 Weekly Tuition Percentage
   The weekly tuition percentage is a float. This is the weekly percentage of money spent on tuition.
-  In order to determine this variable, the weekly_tuition is divided by the weekly_salary, then multiplied by one-hundred to get the percent.
-  self.weekly_tuition_perc = self.weekly_tuition / self.weekly_salary = amount * 100 = amount%
+  In order to determine this variable, the weekly_tuition is divided by the weekly_income, then multiplied by one-hundred to get the percent.
+  self.weekly_tuition_perc = self.weekly_tuition / self.weekly_income = amount * 100 = amount%
   self.weekly_tuition_perc = 0.00 / 650.00 = 0.00 * 100 = 0.00%
   f”Weekly Tuition Percentage: {self.weekly_tuition_perc}”
 
 Weekly Rent Percentage
   The weekly rent percentage is a float. This is the weekly percentage of money spent on rent.
-  In order to determine this variable, the weekly_rent is divided by the weekly_salary, then multiplied by one-hundred to get the percent.
+  In order to determine this variable, the weekly_rent is divided by the weekly_income, then multiplied by one-hundred to get the percent.
   self.weekly_rent_perc = self.weekly_rent / self.weekly_salary = amount * 100 = amount%
   self.weekly_rent_perc = 425 / 650.00 = 0.6538 * 100 = 65.38%
   f”Weekly Rent Percentage: {self.weekly_rent_perc}”
 
 Weekly Utilities Percentage
   The weekly rent percentage is a float. This is the weekly percentage of money spent on rent.
-  In order to determine this variable, the weekly_rent is divided by the weekly_salary, then multiplied by one-hundred to get the percent.
+  In order to determine this variable, the weekly_rent is divided by the weekly_income, then multiplied by one-hundred to get the percent.
   self.weekly_utilities_perc = self.weekly_rent / self.weekly_salary = amount * 100 = amount%
   self.weekly_utilities_perc = 1.35 / 650.00 = 0.0021 * 100 = 0.21%
 
@@ -78,67 +78,18 @@ Spending Needs
   self.spending_needs += each item
   self.spendings_needs_perc = (self.spending_needs / self.total_spendings) * 100
   f”Spending Needs:
-			Total: {self.total_need_spendings}
+			Total: {self.total_need_spendings},
 			Needs Spending Percentage: {self.need_spendings_perc}%”
 
 Thorough Category Analysis
-  The thorough analysis is f-string. This analysis will provide percentages of the categories the user places each name in. 
+  The thorough analysis is f-string. This analysis will provide percentages of the categories the user places each name in. The categories are: Dining Out Food, Groceries, Personal Care, Gardening Supplies, Clothing, Household Items, Technology, Entertainment, Health & Fitness, Gifts, School Resources, Work Resources, Pet Care, Other.
+  f”Thorough Category Analysis
+      Category: %
+      Category: %”
 
 Thorough Name Analysis
-  The thorough name analysis is f-string. The thorough name analysis will provide the percentages of every item in regards to the starting amount.
+  The thorough name analysis is f-string. The thorough name analysis will provide the percentages of every item in regards to the starting amount. The output will depend on the different names at the user provides in the weekly spendings journal. In the program, if there is a name that is recognized multiple times, such as CoFFee and coffee, then these will be considered the same. As a result, Coffee will appear once with the percentage equaling the sum of the two occurrences.
   In order to determine the percentages for each item, every item's total amount will be divided by the starting amount and then multiplied by one-hundred.
   f”Thorough Name Analysis
       Name: %
       Name: %”
-
-
-EXAMPLE OUTPUT
-
-A file containing this information:
-
-Weekly Summary
-
-Starting Amount: $223.65
-Remaining Balance: $0.00
-Overdraft: $41.52
-Windfall: $50.00
-Weekly Tuition Percentage: 0.00%
-Weekly Rent Percentage: 65.38%
-Weekly Utilities Percentage: 0.21%
-Total Spendings: $ 315.17
-
-Spending Wants:
-	Total: $169.57
-	Spending Percentage: 53.80%
-
-Spending Needs:
-	Total: $145.6
-Spending Percentage: 46.2%
-
-Thorough Category Analysis
-	Dining Out Food: %
-	Groceries: %
-	Personal Care: %
-	Gardening Supplies: %
-	Clothing: %
-	Household Items: %
-	Technology: %
-	Entertainment: %
-	Health & Fitness: %
-	Gifts: %
-	School Resources: %
-	Work Resources: %
-	Pet Care: %
-	Other: %
-	Windfall: %
-
-Thorough Name Analysis
-inst327 textbook: 18.28%
-	coffee: 9.49%
-	groceries: 21.58%
-	clothes: 24.16%
-	movie tickets: 5.44%
-	squishmallow: 7.93%
-	dog food: 6.34%
-	lunch: 6.79%
-
